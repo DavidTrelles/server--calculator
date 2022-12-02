@@ -3,6 +3,7 @@ $(onReady);
 function onReady() {
   $(".op").on("click", operator);
   $("#submit").on("click", calculate);
+  render()
 }
 
 let operator1 = "";
@@ -10,6 +11,10 @@ function operator() {
   operator1 = $(this).text();
 }
 function calculate() {
+  if ($("#num1").val()===""||$("#num2").val()==="") {
+    alert ("please fill in all fields");
+    return
+  }
   let newCalculation = {
     num1: $("#num1").val(),
     operation: operator1,
@@ -17,6 +22,7 @@ function calculate() {
   };
   $("#num1").val("");
   $("#num2").val("");
+  operator1 = ""
 
   console.log(newCalculation);
   $.ajax({
@@ -27,14 +33,21 @@ function calculate() {
     console.log("post status", response);
   });
 
-  $.ajax({
-  method:"GET",
-  url:"/calculations",
-  }).then(function(response) {
-    console.log(response)
-    $("#output").empty()
-    for( let calculation of response) {
-      $("#output").append(`<li>${calculation.num1}${calculation.operation}${calculation.num2}=${calculation.sol}</li>`)
-    }
-  })
+  render()
+  
+}
+
+function render(){
+$.ajax({
+  method: "GET",
+  url: "/calculations",
+}).then(function (response) {
+  console.log(response);
+  $("#output").empty();
+  for (let calculation of response) {
+    $("#output").append(
+      `<li>${calculation.num1} ${calculation.operation} ${calculation.num2} = ${calculation.sol}</li>`
+    );
+  }
+});
 }
