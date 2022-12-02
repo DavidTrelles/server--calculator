@@ -32,8 +32,9 @@ function calculate() {
   url:"/calculations",
   }).then(function(response) {
     console.log(response)
+    $("#output").empty()
     for( let calculation of response) {
-      $("#output").empty().append(`<li>${calculation}</li>`)
+      $("#output").append(`<li>${calculation.num1}${calculation.operation}${calculation.num2}=${calculation.sol}</li>`)
     }
   })
 }
