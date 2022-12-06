@@ -29,6 +29,8 @@ function calculate() {
     data: newCalculation,
   }).then(function (response) {
     console.log("post status", response);
+  }).catch(function(error){
+    alert(error.responseText);
   });
 
   render();
